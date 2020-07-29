@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en-us"><head>
+  <meta charset="utf-8">
+  <title>TCP神奇的40ms</title>
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description"
+    content="tcp 40ms延迟">
+  
+  <meta name="generator" content="Hugo 0.74.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://examplesite.com/plugins/bootstrap/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://examplesite.com/plugins/themify-icons/themify-icons.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://examplesite.com/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://examplesite.com/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://examplesite.com/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+</head><body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand"href="https://examplesite.com/"><img class="img-fluid" src="/images/nevermoress1.png" alt="nevermoress"></a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://examplesite.com/"> 文章 </a>
+          </li>
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://examplesite.com/search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="Type & Hit Enter...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>TCP神奇的40ms</h2>
+        <div class="mb-3 post-meta">
+          <a href="/author/nervermoress">Nervermoress</a>,
+          29/07/2020, 
+          <a href="/categories/%e7%bd%91%e7%bb%9c">网络</a>
+          
+        </div>
+        
+        <img src="/images/keepthing1.png" class="img-fluid w-100 mb-4" alt="TCP神奇的40ms">
+        
+        <div class="content mb-5">
+          <h5 id="redis-pipline-你给我延迟了40ms">redis pipline 你给我延迟了40ms？</h5>
+<p>前段时间实现了一个redis代理，在客户端使用pipline请求的时候出现了一个奇异的现象，假设客户端请求3条命令，第2条命令和剩下命令的数据响应总是要在第1条命令到了之后的40ms才到达，经过一系列苦逼的debug找问题后，原本服务端收到pipline 3条命令后会分别把3条命令去请求，都完成后会按顺序依次写入socket去回包，后来改成了组合起来一次写入，40ms的现象不见了，问题是解决了，但是原因是什么呢？带着疑问一顿找原因。</p>
+<h5 id="nagle算法">Nagle算法*</h5>
+<p>Nagle算法的基本定义是任意时刻，最多只能有一个未被确认的小段。只允许一个未被ACK的包存在于网络，它并不管包的大小，因此它事实上就是一个扩展的停-等协议，只不过它是基于包停-等的，而不是基于字节停-等的。</p>
+<h5 id="delay-ack机制">delay ack机制*</h5>
+<p>延时发送ACK，在收到数据包的时候，会检查是否需要发送ACK，如果需要的话，进行快速ACK还是延时ACK，在无法使用快速确认的条件下，就会使用Delay Ack。</p>
+<p>1.当有响应数据发送的时候，ACK会随着数据一块发送。</p>
+<p>2.如果没有响应数据，ACK就会有一个延迟，以等待是否有响应数据一块发送，但是这个延迟一般在40ms~500ms之间，一般情况下在40ms左右，如果在40ms内有数据发送，那么ACK会随着数据一块发送，对于这个延迟的需要注意一下，这个延迟并不是指的是收到数据到发送ACK的时间延迟，而是内核会启动一个定时器，每隔200ms就会检查一次，比如定时器在0ms启动，200ms到期，180ms的时候data来到，那么200ms的时候没有响应数据，ACK仍然会被发送，这个时候延迟了20ms。</p>
+<h5 id="造成40s延迟的原因">造成40s延迟的原因</h5>
+<p><img src="/images/tcp/40s.png" alt="图片走丢了&hellip;.." title="tcp40s"></p>
+<h5 id="触发场景">触发场景</h5>
+<p>一次tcp请求的数据， 不能在服务端产生一次响应。从而导致定时器触发超时也就是40ms..</p>
+<h5 id="规避方案">规避方案</h5>
+<p>只有同时客户端打开Nagel算法， 服务端打开tcp_delay_ack才会导致前面的死锁状态。 解决方案可以从TCP的两端来入手。</p>
+<h6 id="服务端">服务端：</h6>
+<p>关闭tcp_delay_ack, 这样， 每个tcp请求包都会有一个ack及时响应， 不会出现延迟的情况。 操作方式： echo 1 &gt; /proc/sys/net/ipv4/tcp_no_delay_ack 但是， 每个tcp请求都返回一个ack包， 导致网络包量的增加，关闭tcp延迟确认后， 网络包量大概增加了80%，在高峰期影响还是比较明显。
+2.设置TCP_QUICKACK属性。 但是需要每次recv后再设置一次。 对应我们的场景不太适合，需要修改服务端redis源码。</p>
+<h6 id="客户端">客户端：</h6>
+<p>关闭nagel算法，即设置socket tcp_no_delay属性。static void _set_tcp_nodelay(int fd) { int enable = 1; setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, (void*)&amp;enable, sizeof(enable)); }
+避免多次写， 再读取的场景， 合并成一个大包的写；避免一次请求分成多个包发送， 最开始发送的包小于一个MSS，对我们的场景， 把第22号包的1424个字节缓存起来， 大于一个MSS的时候，再发送出去， 服务端立即返回响应， 客户端继续发送后续的数据， 完成交互，避免时延。</p>
+
+        </div>
+      </div>
+      
+      
+        
+        
+      
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+        <a href="https://examplesite.com/" class="d-block pb-3"><img src="/images/nevermoress1.png" class="img-fluid" alt="nevermoress"></a>
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://examplesite.com/">文章</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+          <li class="list-inline-item"><a href="http://github.com"><i class="ti-github"></i></a></li>
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>© 2020 <a href="https://nevermoress.github.io">nevermoress</a> All Rights Reserved</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://examplesite.com/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://examplesite.com/plugins/jQuery/jquery.min.js"></script>
+
+<script src="https://examplesite.com/plugins/bootstrap/bootstrap.min.js"></script>
+
+<script src="https://examplesite.com/plugins/search/fuse.min.js"></script>
+
+<script src="https://examplesite.com/plugins/search/mark.js"></script>
+
+<script src="https://examplesite.com/plugins/search/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://examplesite.com/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

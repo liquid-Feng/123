@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://examplesite.com/categories/</loc>
+    <lastmod>2020-07-29T05:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://examplesite.com/</loc>
+    <lastmod>2020-07-29T05:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://examplesite.com/net01-tcp40/</loc>
+    <lastmod>2020-07-29T05:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://examplesite.com/categories/%E7%BD%91%E7%BB%9C/</loc>
+    <lastmod>2020-07-29T05:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://examplesite.com/author/</loc>
+  </url>
+  
+  <url>
+    <loc>https://examplesite.com/contact/</loc>
+  </url>
+  
+  <url>
+    <loc>https://examplesite.com/author/john-doe/</loc>
+  </url>
+  
+  <url>
+    <loc>https://examplesite.com/author/mark-dinn/</loc>
+  </url>
+  
+  <url>
+    <loc>https://examplesite.com/search/</loc>
+  </url>
+  
+  <url>
+    <loc>https://examplesite.com/tags/</loc>
+  </url>
+  
+  <url>
+    <loc>https://examplesite.com/tools/</loc>
+  </url>
+  
+</urlset>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en-us"><head>
+  <meta charset="utf-8">
+  <title>nevermoress</title>
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description"
+    content="一个没有感情的coder.">
+  
+  <meta name="generator" content="Hugo 0.74.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://examplesite.com/plugins/bootstrap/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://examplesite.com/plugins/themify-icons/themify-icons.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://examplesite.com/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://examplesite.com/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://examplesite.com/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+</head><body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand"href="https://examplesite.com/"><img class="img-fluid" src="/images/nevermoress1.png" alt="nevermoress"></a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://examplesite.com/"> 文章 </a>
+          </li>
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://examplesite.com/search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="Type & Hit Enter...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation -->
+
+
+<section class="banner bg-cover" style="background-image: url('/images/banner/banner-bg.svg');">
+  <img src="/" class="img-fluid illustration" alt="">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 mb-5 mb-lg-0">
+        <h1>一个没有感情的coder.</h1>
+      </div>
+      <div class="col-lg-6 illustration-mobile">
+        <img src="/" class="img-fluid" alt="">
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto px-0">
+        <div class="bg-white shadow block">
+          
+          
+          <article class="mb-5">
+  <h2 class="h4"><a class="post-title" href="https://examplesite.com/net01-tcp40/">TCP神奇的40ms</a></h2>
+  <div class="mb-3 post-meta">
+    <a href="/author/nervermoress">Nervermoress</a>,
+    29/07/2020, 
+    <a href="/categories/%e7%bd%91%e7%bb%9c">网络</a>
+    
+  </div>
+  <p>redis pipline 你给我延迟了40ms？ 前段时间实现了一个redis代理，在客户端使用pipline请求的时候出现了一个奇异的现象，假设客户端请求3条命令，第2条命令和剩下命令的数据响应总是要在第1条命令到了之后的40ms才到达，经过一系列苦逼的debug找问题后，原本服务端收到pipline 3条命令后会分别把3条命令去请求，都完成后会按顺序依次写入socket去回包，后来改成了组合起来一次写入，40ms的现象不见了，问题是解决了，但是原因是什么呢？带着疑问一顿找原因。
+Nagle算法* Nagle算法的基本定义是任意时刻，最多只能有一个未被确认的小段。只允许一个未被ACK的包存在于网络，它并不管包的大小，因此它事实上就是一个扩展的停-等协议，只不过它是基于包停-等的，而不是基于字节停-等的。
+delay ack机制* 延时发送ACK，在收到数据包的时候，会检查是否需要发送ACK，如果需要的话，进行快速ACK还是延时ACK，在无法使用快速确认的条件下，就会使用Delay Ack。</p>
+  <a href="https://examplesite.com/net01-tcp40/" class="btn btn-sm btn-transparent pl-0">详情</a>
+</article>
+          
+          
+          <div class="mt-5">
+            <!-- pagination -->
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <!-- /pagination -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+        <a href="https://examplesite.com/" class="d-block pb-3"><img src="/images/nevermoress1.png" class="img-fluid" alt="nevermoress"></a>
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://examplesite.com/">文章</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+          <li class="list-inline-item"><a href="http://github.com"><i class="ti-github"></i></a></li>
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>© 2020 <a href="https://nevermoress.github.io">nevermoress</a> All Rights Reserved</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://examplesite.com/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://examplesite.com/plugins/jQuery/jquery.min.js"></script>
+
+<script src="https://examplesite.com/plugins/bootstrap/bootstrap.min.js"></script>
+
+<script src="https://examplesite.com/plugins/search/fuse.min.js"></script>
+
+<script src="https://examplesite.com/plugins/search/mark.js"></script>
+
+<script src="https://examplesite.com/plugins/search/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://examplesite.com/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

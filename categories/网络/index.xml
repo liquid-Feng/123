@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>网络 on nevermoress</title>
+    <link>https://examplesite.com/categories/%E7%BD%91%E7%BB%9C/</link>
+    <description>Recent content in 网络 on nevermoress</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 29 Jul 2020 05:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://examplesite.com/categories/%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>TCP神奇的40ms</title>
+      <link>https://examplesite.com/net01-tcp40/</link>
+      <pubDate>Wed, 29 Jul 2020 05:00:00 +0000</pubDate>
+      
+      <guid>https://examplesite.com/net01-tcp40/</guid>
+      <description>redis pipline 你给我延迟了40ms？ 前段时间实现了一个redis代理，在客户端使用pipline请求的时候出现了一个奇异的现象，假设客户端请求3条命令，第2条命令和剩下命令的数据响应总是要在第1条命令到了之后的40ms才到达，经过一系列苦逼的debug找问题后，原本服务端收到pipline 3条命令后会分别把3条命令去请求，都完成后会按顺序依次写入socket去回包，后来改成了组合起来一次写入，40ms的现象不见了，问题是解决了，但是原因是什么呢？带着疑问一顿找原因。
+Nagle算法* Nagle算法的基本定义是任意时刻，最多只能有一个未被确认的小段。只允许一个未被ACK的包存在于网络，它并不管包的大小，因此它事实上就是一个扩展的停-等协议，只不过它是基于包停-等的，而不是基于字节停-等的。
+delay ack机制* 延时发送ACK，在收到数据包的时候，会检查是否需要发送ACK，如果需要的话，进行快速ACK还是延时ACK，在无法使用快速确认的条件下，就会使用Delay Ack。</description>
+    </item>
+    
+  </channel>
+</rss>
